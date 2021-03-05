@@ -1,0 +1,13 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.6">
+  <GVL Name="InputOutputArea" Id="{bf4d805a-e342-4e94-a852-f1aee197d8fc}">
+    <Declaration><![CDATA[VAR_GLOBAL
+	InputBitArea 		: ARRAY[0..1] OF BYTE;
+	OutputBitArea 		: ARRAY[0..1] OF BYTE;
+	
+	InputWordArea		: ARRAY[0..2] OF WORD;
+	OutputWordArea		: ARRAY[0..3] OF WORD;
+END_VAR
+]]></Declaration>
+  </GVL>
+</TcPlcObject>
