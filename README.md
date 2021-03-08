@@ -15,7 +15,7 @@ Twincat 3 :
 
 Program is written in ST language. 
 
-![image](https://user-images.githubusercontent.com/70879506/110294988-9f3f9900-8001-11eb-9eb5-870a1faa5dfe.png)
+![image](https://user-images.githubusercontent.com/70879506/110313931-36afe680-8018-11eb-8f40-2cc73972a2d2.png)
 
-This PID values can be used. Minimum overshoot. No steady-state error, but slow reaction time. 
+This PID values can be used. No overshoot. No steady-state error, but slow reaction time. 
 
