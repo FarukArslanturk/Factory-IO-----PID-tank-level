@@ -1,0 +1,56 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.6">
+  <POU Name="InputOutputConvert" Id="{1c806a45-2259-462f-848e-cfc9e3acb681}" SpecialFunc="None">
+    <Declaration><![CDATA[FUNCTION_BLOCK InputOutputConvert
+VAR_INPUT
+END_VAR
+VAR_OUTPUT
+END_VAR
+VAR
+END_VAR
+]]></Declaration>
+    <Implementation>
+      <ST><![CDATA[
+//Inputs
+LevelMeter := (WORD_TO_INT(InputWordArea[0])*300)/1000;
+FlowMeter  := (WORD_TO_INT(InputWordArea[1])*300)/1000;
+SetPoint   := (WORD_TO_INT(InputWordArea[2])*300)/1000;
+//Outputs
+OutputWordArea[0] := INT_TO_WORD(FillValve);
+OutputWordArea[1] := INT_TO_WORD(DischargeValve);
+SP		   := SetPoint;
+OutputWordArea[2] := INT_TO_WORD(SP);
+PV		   := LevelMeter;
+OutputWordArea[3] := INT_TO_WORD(PV);
+
+//
+Start := InputBitArea[0].0;
+Reset := InputBitArea[0].1;
+Stop  := InputBitArea[0].2;
+//
+OutputBitArea[0].0 := StartLight;
+OutputBitArea[0].1 := ResetLight;
+OutputBitArea[0].2 := StopLight;
+]]></ST>
+    </Implementation>
+    <LineIds Name="InputOutputConvert">
+      <LineId Id="14" Count="0" />
+      <LineId Id="28" Count="0" />
+      <LineId Id="32" Count="0" />
+      <LineId Id="46" Count="1" />
+      <LineId Id="33" Count="0" />
+      <LineId Id="54" Count="1" />
+      <LineId Id="19" Count="0" />
+      <LineId Id="48" Count="0" />
+      <LineId Id="50" Count="0" />
+      <LineId Id="56" Count="0" />
+      <LineId Id="64" Count="0" />
+      <LineId Id="49" Count="0" />
+      <LineId Id="65" Count="2" />
+      <LineId Id="69" Count="0" />
+      <LineId Id="68" Count="0" />
+      <LineId Id="70" Count="0" />
+      <LineId Id="72" Count="1" />
+    </LineIds>
+  </POU>
+</TcPlcObject>

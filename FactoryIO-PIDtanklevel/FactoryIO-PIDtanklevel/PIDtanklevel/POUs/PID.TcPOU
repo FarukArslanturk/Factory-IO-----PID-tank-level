@@ -1,0 +1,97 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.6">
+  <POU Name="PID" Id="{6cbe4950-e171-4e3b-a7a3-1d36991c23a2}" SpecialFunc="None">
+    <Declaration><![CDATA[FUNCTION_BLOCK PID
+VAR_INPUT
+END_VAR
+VAR_OUTPUT
+END_VAR
+VAR
+	FB_CTRL_PID: FB_CTRL_PID;
+	stCTRL_PID_PARAMS: ST_CTRL_PID_PARAMS;
+	Init : BOOL:=TRUE;
+	fManSyncValue : LREAL;
+	fOut : LREAL;
+	fState : LREAL;
+	fErrId : LREAL;
+	bErr   : BOOL;
+	fCTRL_Mode : E_CTRL_MODE;
+END_VAR
+]]></Declaration>
+    <Implementation>
+      <ST><![CDATA[
+IF Init THEN
+	stCTRL_PID_PARAMS.tCtrlCycleTime 	:= T#10MS;
+	stCTRL_PID_PARAMS.tTaskCycleTime 	:= T#10MS;
+	stCTRL_PID_PARAMS.fKp				:= 15.0;
+	stCTRL_PID_PARAMS.tTn				:= T#20S;
+	stCTRL_PID_PARAMS.tTv				:= T#0S;
+	stCTRL_PID_PARAMS.tTd				:= T#0S;
+	stCTRL_PID_PARAMS.fOutMaxLimit		:= 1000;
+	stCTRL_PID_PARAMS.fOutMinLimit		:= -1000;
+	stCTRL_PID_PARAMS.bPInTheFeedbackPath := TRUE;
+	stCTRL_PID_PARAMS.bDInTheFeedbackPath := TRUE;
+	
+	Init := FALSE;
+END_IF
+
+IF NOT SystemStarted THEN
+	fCTRL_Mode := eCTRL_MODE_PASSIVE;
+ELSE
+	fCTRL_Mode := eCTRL_MODE_ACTIVE;	
+END_IF
+
+IF Reset THEN
+	fCTRL_Mode := eCTRL_MODE_RESET;
+END_IF
+
+FB_CTRL_PID(
+	fSetpointValue:= INT_TO_LREAL(SetPoint), 
+	fActualValue:= INT_TO_LREAL(LevelMeter), 
+	fManSyncValue:= fManSyncValue, 
+	bSync:= FALSE, 
+	eMode:= fCTRL_Mode, 
+	bHold:= FALSE, 
+	fOut=> fOut, 
+	bARWactive=> , 
+	eState=> fState, 
+	eErrorId=> fErrId, 
+	bError=> bErr, 
+	stParams:= stCTRL_PID_PARAMS);
+	
+IF fOut >= 0 THEN
+	FillValve := LREAL_TO_INT(fOut);
+	DischargeValve := 0;
+ELSE
+	FillValve := 0;
+	DischargeValve := ABS(LREAL_TO_INT(fOut));
+END_IF
+]]></ST>
+    </Implementation>
+    <LineIds Name="PID">
+      <LineId Id="23" Count="1" />
+      <LineId Id="38" Count="2" />
+      <LineId Id="42" Count="4" />
+      <LineId Id="92" Count="1" />
+      <LineId Id="47" Count="1" />
+      <LineId Id="37" Count="0" />
+      <LineId Id="80" Count="1" />
+      <LineId Id="84" Count="0" />
+      <LineId Id="86" Count="1" />
+      <LineId Id="85" Count="0" />
+      <LineId Id="89" Count="0" />
+      <LineId Id="88" Count="0" />
+      <LineId Id="90" Count="1" />
+      <LineId Id="25" Count="0" />
+      <LineId Id="11" Count="11" />
+      <LineId Id="9" Count="0" />
+      <LineId Id="52" Count="1" />
+      <LineId Id="55" Count="0" />
+      <LineId Id="57" Count="0" />
+      <LineId Id="59" Count="1" />
+      <LineId Id="62" Count="0" />
+      <LineId Id="56" Count="0" />
+      <LineId Id="63" Count="0" />
+    </LineIds>
+  </POU>
+</TcPlcObject>

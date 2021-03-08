@@ -1,0 +1,68 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.6">
+  <POU Name="ModbusRead" Id="{99c4169c-a3d5-4a25-ad98-775f18ef60f0}" SpecialFunc="None">
+    <Declaration><![CDATA[PROGRAM ModbusRead
+VAR
+	FB_MBReadInputs: FB_MBReadInputs;
+	tReadInput: TON;
+	bReadExecute: BOOL;
+	
+	IP 		: STRING:='127.0.0.1';
+	Port 	: UINT:=505;
+	ID 		: BYTE:=255;
+	
+	FB_MBReadInputRegs: FB_MBReadInputRegs;
+	TON: TON;
+	bInReg: BOOL;
+END_VAR
+]]></Declaration>
+    <Implementation>
+      <ST><![CDATA[
+tReadInput(IN:= NOT FB_MBReadInputs.bBusy, PT:=T#10MS , Q=>bReadExecute , ET=> );
+
+FB_MBReadInputs(
+	sIPAddr:= IP, 
+	nTCPPort:= Port, 
+	nUnitID:= ID, 
+	nQuantity:= 16, 
+	nMBAddr:= 0, 
+	cbLength:= SIZEOF(InputBitArea), 
+	pDestAddr:= ADR(InputBitArea), 
+	bExecute:= bReadExecute, 
+	tTimeout:= T#1S, 
+	bBusy=> , 
+	bError=> , 
+	nErrId=> , 
+	cbRead=> );
+
+TON(IN:= NOT FB_MBReadInputRegs.bBusy , PT:=T#10MS , Q=>bInReg , ET=> );
+	
+FB_MBReadInputRegs(
+	sIPAddr:= IP, 
+	nTCPPort:= Port, 
+	nUnitID:= ID, 
+	nQuantity:= 3, 
+	nMBAddr:= 0, 
+	cbLength:= SIZEOF(InputWordArea), 
+	pDestAddr:= ADR(InputWordArea), 
+	bExecute:= bInReg, 
+	tTimeout:= T#1S, 
+	bBusy=> , 
+	bError=> , 
+	nErrId=> , 
+	cbRead=> );]]></ST>
+    </Implementation>
+    <LineIds Name="ModbusRead">
+      <LineId Id="6" Count="0" />
+      <LineId Id="22" Count="0" />
+      <LineId Id="7" Count="0" />
+      <LineId Id="9" Count="12" />
+      <LineId Id="5" Count="0" />
+      <LineId Id="152" Count="0" />
+      <LineId Id="122" Count="0" />
+      <LineId Id="153" Count="0" />
+      <LineId Id="139" Count="12" />
+      <LineId Id="56" Count="0" />
+    </LineIds>
+  </POU>
+</TcPlcObject>
