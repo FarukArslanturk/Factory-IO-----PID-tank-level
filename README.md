@@ -1,7 +1,9 @@
 # Factory-IO-----PID-tank-level
 Factory IO -- PID tank level solution.
 
-TIA PORTAL and Twincat 3 solution is attached. Here below youtube link attached using twincat 3. I didn't record a video for TIA PORTAL.
+TIA PORTAL and Twincat 3 solution is attached. C# WinForm solution also added lately, but in another repository. You can find it in my main home directory.
+
+Here below youtube link attached using twincat 3. I didn't record a video for TIA PORTAL.
 
 https://www.youtube.com/watch?v=hXsjRrmK38g
 
